@@ -1,5 +1,5 @@
 {
-  "name": "vs-code-gitpod",
+	"name": "vs-code-gitpod",
 	"displayName": "vs-code-gitpod",
 	"description": "An extension for opening GitPod from your current workspace",
 	"version": "0.0.1",
@@ -10,14 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:vs-code-gitpod.helloWorld"
+		"onCommand:vs-code-gitpod.open"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vs-code-gitpod.helloWorld",
-				"title": "Hello World"
+				"command": "vs-code-gitpod.open",
+				"title": "Open GitPod"
 			}
 		]
 	},
@@ -33,19 +33,22 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.59.0",
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.2.2",
 		"@types/node": "14.x",
-		"eslint": "^7.27.0",
+		"@types/vscode": "^1.59.0",
 		"@typescript-eslint/eslint-plugin": "^4.26.0",
 		"@typescript-eslint/parser": "^4.26.0",
+		"eslint": "^7.27.0",
 		"glob": "^7.1.7",
 		"mocha": "^8.4.0",
+		"ts-loader": "^9.2.2",
 		"typescript": "^4.3.2",
 		"vscode-test": "^1.5.2",
-		"ts-loader": "^9.2.2",
 		"webpack": "^5.38.1",
 		"webpack-cli": "^4.7.0"
+	},
+	"dependencies": {
+		"child_process": "^1.0.2"
 	}
 }
