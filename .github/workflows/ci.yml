@@ -20,6 +20,8 @@ jobs:
           cache: "yarn"
       - run: yarn install
       - run: yarn vscode:prepublish
+      - run: npm i -g vsce
+      - run: vsce package
       - uses: actions/upload-artifact@v2
         with:
           name: extension-artifact
