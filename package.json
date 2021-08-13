@@ -3,6 +3,7 @@
   "license": "MIT",
   "displayName": "vs-code-gitpod",
   "publisher": "filiptronicek",
+  "repository": "https://github.com/filiptronicek/vs-code-gitpod/",
   "description": "An extension for opening GitPod from your current workspace",
   "version": "0.0.1",
   "engines": {
