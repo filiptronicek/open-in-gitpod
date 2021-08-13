@@ -49,7 +49,6 @@ export function activate(context: vscode.ExtensionContext) {
           } else {
             // If the domain is allowed, open the project in GitPod (in the user's default browser)
             vscode.env.openExternal(vscode.Uri.parse(`https://gitpod.io/#${origin}`));
-
           }
         })
         .catch((err) => {
