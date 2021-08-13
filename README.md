@@ -1,13 +1,6 @@
-# vs-code-gitpod README
+# Open GitPod from VS Code
 
-This is the README for your extension "vs-code-gitpod". After writing up a brief description, we recommend including the following sections.
-
-## Features
 The GitPod extension adds the ability to open the current workspace in GitPod.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
 ## Known Issues
 
