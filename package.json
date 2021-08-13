@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:vs-code-gitpod.open"
+		"*"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
