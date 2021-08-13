@@ -2,17 +2,28 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import * as cp from "child_process";
+import fs = require("fs");
+import path = require("path");
 import { URL } from "url";
 
-const execShell = (cmd: string, path: string) => {
-  return new Promise<string>((resolve, reject) => {
-    cp.exec(cmd, { cwd: path }, (err, out) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(out);
+function isGitSync(dir: string) {
+  return fs.existsSync(path.join(dir, ".git"));
+}
+
+const execShell = (cmd: string, directory: string) => {
+  if (isGitSync(directory)) {
+    return new Promise<string>((resolve, reject) => {
+      cp.exec(cmd, { cwd: directory }, (err, out) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(out);
+      });
     });
-  });
+  } else {
+    // Return an error, because we can't find the .git directory
+    return Promise.reject(new Error("Not a git repository"));
+  }
 };
 
 const allowedDomains = ["github.com", "gitlab.com"];
