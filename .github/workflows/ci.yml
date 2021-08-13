@@ -20,3 +20,7 @@ jobs:
           cache: "yarn"
       - run: yarn install
       - run: yarn vscode:prepublish
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extension-artifact
+          path: ./*.vsix
