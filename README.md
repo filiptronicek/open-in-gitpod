@@ -1,4 +1,4 @@
-# Open GitPod from VS Code
+# Open in GitPod - the VS Code extension
 
 The GitPod extension adds the ability to open the current workspace in GitPod.
 
