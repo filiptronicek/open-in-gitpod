@@ -56,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
       }
     })
     .catch((err) => {
-      vscode.window.showErrorMessage("Error: " + err);
+      vscode.window.showErrorMessage(`Error: ${err}`);
     });
 
   const disposable = vscode.commands.registerCommand(
