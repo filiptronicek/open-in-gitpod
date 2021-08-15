@@ -51,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
         );
 
         statusBarItem.text = "$(code) Open in GitPod";
-        statusBarItem.command = "vs-code-gitpod.open";
+        statusBarItem.command = "open-in-gitpod.open";
         statusBarItem.show();
       }
     })
@@ -60,7 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
   const disposable = vscode.commands.registerCommand(
-    "vs-code-gitpod.open",
+    "open-in-gitpod.open",
     () => {
       vscode.window.showInformationMessage("Opening in GitPod... ");
 

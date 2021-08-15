@@ -1,7 +1,7 @@
 {
-  "name": "vs-code-gitpod",
+  "name": "open-in-gitpod",
   "license": "MIT",
-  "displayName": "vs-code-gitpod",
+  "displayName": "Open in GitPod",
   "publisher": "filiptronicek",
   "repository": "https://github.com/filiptronicek/vs-code-gitpod/",
   "description": "An extension for opening GitPod from your current workspace",
@@ -19,8 +19,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "vs-code-gitpod.open",
-        "title": "Open GitPod"
+        "command": "open-in-gitpod.open",
+        "title": "Open"
       }
     ]
   },
