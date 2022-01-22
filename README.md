@@ -1,6 +1,6 @@
-# Open in GitPod - the VS Code extension
+# Open in Gitpod - the VS Code extension
 
-The GitPod extension adds the ability to open the current workspace in GitPod.
+This extension adds the ability to open the current workspace in Gitpod.
 
 ## Download
 You can download the extension as a .vsix file from the [GitHub releases page](https://github.com/filiptronicek/open-in-gitpod/releases) and see [this guide](https://code.visualstudio.com/docs/editor/extension-marketplace#_install-from-a-vsix) on installing it.
