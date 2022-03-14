@@ -10,6 +10,13 @@ function isGitSync(dir: string) {
   return fs.existsSync(path.join(dir, ".git"));
 }
 
+class NotRepoError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "NotRepoError";
+  }
+}
+
 const execShell = (cmd: string, directory: string) => {
   if (isGitSync(directory)) {
     return new Promise<string>((resolve, reject) => {
@@ -22,7 +29,7 @@ const execShell = (cmd: string, directory: string) => {
     });
   } else {
     // Return an error, because we can't find the .git directory
-    return Promise.reject(new Error("Not a git repository"));
+    return Promise.reject(new NotRepoError("Not a git repository"));
   }
 };
 
@@ -32,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
   const folderPath = vscode.workspace.workspaceFolders?.[0].uri.fsPath;
 
   let gitOrigin = "";
+  let gitBranch = "";
   let openable = false;
 
   // get the git origin
@@ -41,28 +49,44 @@ export function activate(context: vscode.ExtensionContext) {
       const domain = urlObject.hostname;
 
       if (allowedDomains.includes(domain)) {
-        // If the domain is allowed, open the project in GitPod (in the user's default browser)
+        // If the domain is allowed, open the project in Gitpod (in the user's default browser)
         openable = true;
-        gitOrigin = origin;
+        gitOrigin = origin.trim();
 
         // Upon activation, create a status bar item
         const statusBarItem = vscode.window.createStatusBarItem(
           vscode.StatusBarAlignment.Left
         );
 
-        statusBarItem.text = "$(code) Open in GitPod";
+        updateBranch();
+
+        statusBarItem.text = "$(code) Open in Gitpod";
         statusBarItem.command = "open-in-gitpod.open";
         statusBarItem.show();
       }
     })
     .catch((err) => {
-      vscode.window.showErrorMessage(`Error: ${err}`);
+      if (!(err instanceof NotRepoError)) {
+        vscode.window.showErrorMessage(`Error: ${err}`);
+      }
     });
 
+
+  const updateBranch = async () => {
+    // get the git branch
+    try {
+      const branch = await execShell(`git rev-parse --abbrev-ref HEAD`, folderPath || "./");
+      gitBranch = branch;
+    } catch (err) {
+      if (!(err instanceof NotRepoError)) {
+        vscode.window.showErrorMessage(`Error: ${err}`);
+      }
+    }
+  };
   const disposable = vscode.commands.registerCommand(
     "open-in-gitpod.open",
     () => {
-      vscode.window.showInformationMessage("Opening in GitPod... ");
+      vscode.window.showInformationMessage("Opening in Gitpod... ");
 
       if (!vscode.workspace) {
         return vscode.window.showErrorMessage(
@@ -72,12 +96,29 @@ export function activate(context: vscode.ExtensionContext) {
 
       if (!openable) {
         vscode.window.showErrorMessage(
-          `The project is not hosted on a GitLab or GitHub server and cannot be opened with GitPod.`
+          `The project is not hosted on a GitLab or GitHub server and cannot be opened with Gitpod.`
         );
       } else {
-        vscode.env.openExternal(
-          vscode.Uri.parse(`https://gitpod.io/#${gitOrigin}`)
-        );
+        let uriToOpen;
+        const urlObject = new URL(gitOrigin);
+        const domain = urlObject.hostname;
+        updateBranch().then(() => {
+          switch (domain) {
+            case 'github.com':
+              uriToOpen = `https://gitpod.io/#${gitOrigin}/tree/${gitBranch}`;
+              break;
+            case 'gitlab.com':
+              uriToOpen = `https://gitpod.io/#${gitOrigin}/-/tree/${gitBranch}`;
+              break;
+            default:
+              uriToOpen = gitOrigin;
+          }
+
+          vscode.env.openExternal(
+            vscode.Uri.parse(uriToOpen)
+          );
+        });
+
       }
     }
   );
@@ -86,4 +127,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

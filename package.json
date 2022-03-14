@@ -1,10 +1,10 @@
 {
   "name": "open-in-gitpod",
   "license": "MIT",
-  "displayName": "Open in GitPod",
+  "displayName": "Open in Gitpod",
   "publisher": "filiptronicek",
   "repository": "https://github.com/filiptronicek/vs-code-gitpod/",
-  "description": "An extension for opening GitPod from your current workspace",
+  "description": "An extension for opening Gitpod from your current workspace",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.59.0"
