@@ -2,8 +2,9 @@
 
 This extension adds the ability to open the current workspace in Gitpod.
 
-## Download
-You can download the extension as a .vsix file from the [GitHub releases page](https://github.com/filiptronicek/open-in-gitpod/releases) and see [this guide](https://code.visualstudio.com/docs/editor/extension-marketplace#_install-from-a-vsix) on installing it.
+## Where to get it
+
+The extension is available on both [the Microsoft Marketplace](https://marketplace.visualstudio.com/items?itemName=filiptronicek.open-in-gitpod) and [OpenVSX](https://open-vsx.org/extension/filiptronicek/open-in-gitpod).
 
 ## Known Issues
 
