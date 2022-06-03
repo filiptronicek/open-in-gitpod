@@ -52,17 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
         // If the domain is allowed, open the project in Gitpod (in the user's default browser)
         openable = true;
         gitOrigin = origin.trim().replace('.git', '');
-
-        // Upon activation, create a status bar item
-        const statusBarItem = vscode.window.createStatusBarItem(
-          vscode.StatusBarAlignment.Left
-        );
-
         updateBranch();
-
-        statusBarItem.text = "$(code) Open in Gitpod";
-        statusBarItem.command = "open-in-gitpod.open";
-        statusBarItem.show();
       }
     })
     .catch((err) => {

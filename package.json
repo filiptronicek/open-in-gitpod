@@ -13,13 +13,14 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onCommand:open-in-gitpod.open"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "open-in-gitpod.open",
+        "category": "Open in Gitpod",
         "title": "Open"
       }
     ]
