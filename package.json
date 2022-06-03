@@ -13,7 +13,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:open-in-gitpod.open"
+    "onCommand:open-in-gitpod.open",
+    "onCommand:open-in-gitpod.copy"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -22,6 +23,11 @@
         "command": "open-in-gitpod.open",
         "category": "Open in Gitpod",
         "title": "Open"
+      },
+      {
+        "command": "open-in-gitpod.copy",
+        "category": "Open in Gitpod",
+        "title": "Copy Gitpod URL"
       }
     ]
   },

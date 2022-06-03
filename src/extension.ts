@@ -50,7 +50,6 @@ export async function activate(context: vscode.ExtensionContext) {
   const folderPath = vscode.workspace.workspaceFolders?.[0].uri.fsPath;
 
   let openable = false;
-  const gitBranch = await getBranch(folderPath);
   try {
     // get the git origin
     let origin = await execShell(`git config --get remote.origin.url`, folderPath || "./");
@@ -65,46 +64,65 @@ export async function activate(context: vscode.ExtensionContext) {
       getBranch(folderPath);
     }
 
-    const disposable = vscode.commands.registerCommand(
-      "open-in-gitpod.open",
-      () => {
-        vscode.window.showInformationMessage("Opening in Gitpod... ");
+    const getGitpodUrl = async () => {
+      if (!vscode.workspace) {
+        return vscode.window.showErrorMessage(
+          "Please open a project folder first"
+        );
+      }
 
-        if (!vscode.workspace) {
-          return vscode.window.showErrorMessage(
-            "Please open a project folder first"
-          );
+      if (!openable) {
+        vscode.window.showErrorMessage(
+          `The project is not hosted on a GitLab or GitHub server and cannot be opened with Gitpod.`
+        );
+      } else {
+        let uriToOpen;
+        const urlObject = new URL(origin);
+        const domain = urlObject.hostname;
+        const gitBranch = await getBranch(folderPath);
+        switch (domain) {
+          case 'github.com':
+            uriToOpen = `https://gitpod.io/#${origin}/tree/${gitBranch}`;
+            break;
+          case 'gitlab.com':
+            uriToOpen = `https://gitpod.io/#${origin}/-/tree/${gitBranch}`;
+            break;
+          default:
+            uriToOpen = origin;
         }
+        return uriToOpen;
 
-        if (!openable) {
-          vscode.window.showErrorMessage(
-            `The project is not hosted on a GitLab or GitHub server and cannot be opened with Gitpod.`
-          );
-        } else {
-          let uriToOpen;
-          const urlObject = new URL(origin);
-          const domain = urlObject.hostname;
-          getBranch().then(() => {
-            switch (domain) {
-              case 'github.com':
-                uriToOpen = `https://gitpod.io/#${origin}/tree/${gitBranch}`;
-                break;
-              case 'gitlab.com':
-                uriToOpen = `https://gitpod.io/#${origin}/-/tree/${gitBranch}`;
-                break;
-              default:
-                uriToOpen = origin;
-            }
+      }
+    };
 
-            vscode.env.openExternal(
-              vscode.Uri.parse(uriToOpen)
-            );
-          });
-
+    const copyCommand = vscode.commands.registerCommand(
+      "open-in-gitpod.copy",
+      async () => {
+        const uriToOpen = await getGitpodUrl();
+        if (uriToOpen) {
+          try {
+            vscode.env.clipboard.writeText(uriToOpen);
+            vscode.window.showInformationMessage("Copied the URL successfully");
+          } catch (e) {
+            vscode.window.showErrorMessage("Failed to copy the URL");
+          }
         }
       }
     );
-    context.subscriptions.push(disposable);
+
+    const openCommand = vscode.commands.registerCommand(
+      "open-in-gitpod.open",
+      async () => {
+        vscode.window.showInformationMessage("Opening in Gitpod... ");
+        const uriToOpen = await getGitpodUrl();
+        if (uriToOpen) {
+          vscode.env.openExternal(
+            vscode.Uri.parse(uriToOpen)
+          );
+        }
+      }
+    );
+    context.subscriptions.push(openCommand, copyCommand);
   } catch (err) {
     if (!(err instanceof NotRepoError)) {
       vscode.window.showErrorMessage(`Error: ${err}`);
