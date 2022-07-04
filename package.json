@@ -5,7 +5,7 @@
   "publisher": "filiptronicek",
   "repository": "https://github.com/filiptronicek/vs-code-gitpod/",
   "description": "An extension for opening Gitpod from your current workspace",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.65.0"
   },
